@@ -1,0 +1,7 @@
+tide.graphQl.port=4568
+tide.graphQl.minThreads=2
+tide.graphQl.maxThreads=4
+tide.graphQl.timeOutMillis=40000
+
+tide.dataLoc=data.csv
+tide.usersLoc=users.csv
