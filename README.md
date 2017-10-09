@@ -19,7 +19,7 @@ in future updates, as currently it will throw a runtime exception if not authent
 Future Updates:
 
   1. Containerization
-  2. Unit Testing
+  2. Remove accidentally added files that should be ignored.
   
  Scalabilty:
  
