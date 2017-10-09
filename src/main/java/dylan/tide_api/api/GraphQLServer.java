@@ -1,6 +1,5 @@
 package dylan.tide_api.api;
 
-import static spark.Spark.halt;
 import static spark.Spark.port;
 import static spark.Spark.post;
 import static spark.Spark.threadPool;
@@ -75,15 +74,6 @@ public class GraphQLServer {
 
 	post("/graphql", (req, res) -> {
 
-	    /*
-	     * TODO: Implement authentication
-	     */
-	    boolean authenticated = true;
-
-	    if (!authenticated) {
-		halt(401, "You are not authorised access to the API");
-	    }
-
 	    return process(req, res);
 
 	});
@@ -112,9 +102,9 @@ public class GraphQLServer {
 	    if (executionResult.getErrors()
 			       .size() > 0) {
 		result.put("errors", executionResult.getErrors());
+	    } else {
+		result.put("data", executionResult.getData());
 	    }
-
-	    result.put("data", executionResult.getData());
 
 	    response.type("application/json");
 

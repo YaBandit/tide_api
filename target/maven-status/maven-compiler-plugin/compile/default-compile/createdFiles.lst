@@ -1,0 +1,11 @@
+dylan\tide_api\api\ApiGraphBuilder.class
+dylan\tide_api\api\GraphQLServer.class
+dylan\tide_api\core\ConfigReader.class
+dylan\tide_api\data\DataManager.class
+dylan\tide_api\data\ActiveFeature.class
+dylan\tide_api\core\Globals.class
+dylan\tide_api\api\GraphObjects.class
+dylan\tide_api\core\Pair.class
+dylan\tide_api\core\Utils.class
+dylan\tide_api\data\Version.class
+dylan\tide_api\Engine.class

@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import dylan.tide_api.Engine;
 import dylan.tide_api.core.Pair;
 import graphql.GraphQL;
+import graphql.GraphQLException;
 import graphql.schema.GraphQLArgument;
 import graphql.schema.GraphQLList;
 import graphql.schema.GraphQLNonNull;
@@ -30,10 +31,10 @@ public class ApiGraphBuilder {
 
     private static final Logger	     log		    = LoggerFactory.getLogger(ApiGraphBuilder.class);
 
-    private static final int	     MAX_RETURN_AMOUNT	    = 20;
+    public static final int	     MAX_RETURN_AMOUNT	    = 20;
 
-    private static final String	     GLOBAL_ARGUMENT_USER   = "username";
-    private static final String	     GLOBAL_ARGUMENT_FIRST  = "first";
+    public static final String	     GLOBAL_ARGUMENT_USER   = "username";
+    public static final String	     GLOBAL_ARGUMENT_FIRST  = "first";
 
     private static final String	     QUERY_ARGUMENT_FEATURE = "feature";
 
@@ -56,6 +57,8 @@ public class ApiGraphBuilder {
 
     private GraphQL createGraphQl() {
 
+	log.debug("Building root query");
+
 	/*
 	 * Below is the root query
 	 */
@@ -69,7 +72,7 @@ public class ApiGraphBuilder {
 
 										  final Pair<Map<String, Object>, Map<String, Object>> argMap = returnGlobalAndNonGlobalArgs(d.getArguments());
 
-										  checkGlobalArgs(argMap.getA());
+										  checkGlobalArgs(argMap.getA(), engine);
 
 										  final int limit = getReturnLimit(argMap.getA());
 
@@ -128,26 +131,27 @@ public class ApiGraphBuilder {
 
     }
 
-    private void checkGlobalArgs(Map<String, Object> args) {
+    public static void checkGlobalArgs(Map<String, Object> args, Engine engine) {
 
 	args.forEach((k, v) -> {
 	    if (k.equals(GLOBAL_ARGUMENT_USER)) {
 		if (v != null && !engine.getDataManager()
 					.getAllowedUsers()
 					.contains(v)) {
-		    throw new RuntimeException("User Not Permitted");
+		    log.info("User not permitted access to API: " + v);
+		    throw new GraphQLException("User Not Permitted");
 		}
 	    }
 	    if (k.equals(GLOBAL_ARGUMENT_FIRST)) {
 		if (v != null && ((Integer) v) > MAX_RETURN_AMOUNT) {
-		    throw new RuntimeException("Api return limit exceeded");
+		    throw new GraphQLException("Api return limit exceeded");
 		}
 	    }
 	});
 
     }
 
-    private static int getReturnLimit(Map<String, Object> args) {
+    public static int getReturnLimit(Map<String, Object> args) {
 
 	for (Entry<String, Object> e : args.entrySet()) {
 	    if (e.getKey()

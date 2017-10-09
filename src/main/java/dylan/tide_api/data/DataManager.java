@@ -1,5 +1,6 @@
 package dylan.tide_api.data;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -12,17 +13,22 @@ import dylan.tide_api.core.Utils;
 
 public class DataManager {
 
-    private static final Logger	      log	    = LoggerFactory.getLogger(DataManager.class);
+    private static final Logger	log	      = LoggerFactory.getLogger(DataManager.class);
 
-    private static final String	      KEY_DATA_LOC  = "dataLoc";
-    private static final String	      KEY_USERS_LOC = "usersLoc";
+    private static final String	KEY_DATA_LOC  = "dataLoc";
+    private static final String	KEY_USERS_LOC = "usersLoc";
 
-    private final List<ActiveFeature> activeFeatures;
+    private List<ActiveFeature>	activeFeatures;
 
-    private final List<String>	      allowedUsers;
+    protected List<String>	allowedUsers;
 
     public DataManager(Engine engine) throws Exception {
 
+	init(engine);
+
+    }
+
+    protected void init(Engine engine) throws IOException, Exception {
 	final String fileLoc = engine.getConfig()
 				     .getStringValue(KEY_DATA_LOC);
 
@@ -87,7 +93,6 @@ public class DataManager {
 	log.info("Found " + lines.size() + " users");
 
 	allowedUsers = Collections.unmodifiableList(users);
-
     }
 
     public List<ActiveFeature> getActiveFeatures() {

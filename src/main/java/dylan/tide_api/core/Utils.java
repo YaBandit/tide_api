@@ -12,6 +12,7 @@ import org.apache.log4j.PropertyConfigurator;
 
 public class Utils {
 
+    @SuppressWarnings("resource")
     public static ConfigReader handleArgs(String[] args) throws Exception {
 
 	final Properties props = new Properties();

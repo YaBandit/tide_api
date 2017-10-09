@@ -11,15 +11,15 @@ import dylan.tide_api.data.DataManager;
 
 public class Engine {
 
-    private final Logger log = LoggerFactory.getLogger(Engine.class);
+    private final Logger  log = LoggerFactory.getLogger(Engine.class);
 
-    private String	 componentId;
+    private String	  componentId;
 
-    private ConfigReader config;
+    private ConfigReader  config;
 
-    private DataManager	 dataManager;
+    protected DataManager dataManager;
 
-    private void init(ConfigReader config) throws Exception {
+    public void init(ConfigReader config) throws Exception {
 
 	this.config = config;
 
